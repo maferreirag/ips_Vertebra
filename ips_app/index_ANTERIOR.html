@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Transformación de Imágenes</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function previewImage(input, imagePreviewId, transformacionSelectId) {
+      var imagePreview = document.getElementById(imagePreviewId);
+      var transformacionSelect = document.getElementById(transformacionSelectId);
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          transformacionSelect.disabled = false; // Habilitar la selección de transformación
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        imagePreview.src = ''; // Vaciar la vista previa de la imagen
+        transformacionSelect.disabled = true; // Deshabilitar la selección de transformación
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">Transformación de Imágenes</h1>
+    <form action="/procesar-imagen" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="imagen1">Imagen 1:</label>
+        <input type="file" class="form-control-file" id="imagen1" name="imagen1" accept=".jpg,.png" onchange="previewImage(this, 'preview1', 'transformacion1')" required>
+        <div class="mt-2">
+          <img id="preview1" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="transformacion1">Seleccionar Transformación:</label>
+        <select class="form-control" id="transformacion1" name="transformacion1" disabled>
+          <option value="" disabled selected>Seleccione una imagen y después seleccione una transformación</option>
+          <option value="invertir">Invertir los colores</option>
+          <option value="blanco_negro">Pasar a Blanco y Negro</option>
+          <option value="rotar">Rotar la imagen 90 grados</option>
+          <option value="invertir_eje">Invertir sobre el eje vertical</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imagen2">Imagen 2:</label>
+        <input type="file" class="form-control-file" id="imagen2" name="imagen2" accept=".jpg,.png" onchange="previewImage(this, 'preview2', 'transformacion2')">
+        <div class="mt-2">
+          <img id="preview2" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="transformacion2">Seleccionar Transformación:</label>
+        <select class="form-control" id="transformacion2" name="transformacion2" disabled>
+          <option value="" disabled selected>Seleccione una imagen y después seleccione una transformación</option>
+          <option value="invertir">Invertir los colores</option>
+          <option value="blanco_negro">Pasar a Blanco y Negro</option>
+          <option value="rotar">Rotar la imagen 90 grados</option>
+          <option value="invertir_eje">Invertir sobre el eje vertical</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imagen3">Imagen 3:</label>
+        <input type="file" class="form-control-file" id="imagen3" name="imagen3" accept=".jpg,.png" onchange="previewImage(this, 'preview3', 'transformacion3')">
+        <div class="mt-2">
+          <img id="preview3" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="transformacion3">Seleccionar Transformación:</label>
+        <select class="form-control" id="transformacion3" name="transformacion3" disabled>
+          <option value="" disabled selected>Seleccione una imagen y después seleccione una transformación</option>
+          <option value="invertir">Invertir los colores</option>
+          <option value="blanco_negro">Pasar a Blanco y Negro</option>
+          <option value="rotar">Rotar la imagen 90 grados</option>
+          <option value="invertir_eje">Invertir sobre el eje vertical</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="imagen4">Imagen 4:</label>
+        <input type="file" class="form-control-file" id="imagen4" name="imagen4" accept=".jpg,.png" onchange="previewImage(this, 'preview4', 'transformacion4')">
+        <div class="mt-2">
+          <img id="preview4" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="transformacion4">Seleccionar Transformación:</label>
+        <select class="form-control" id="transformacion4" name="transformacion4" disabled>
+          <option value="" disabled selected>Seleccione una imagen y después seleccione una transformación</option>
+          <option value="invertir">Invertir los colores</option>
+          <option value="blanco_negro">Pasar a Blanco y Negro</option>
+          <option value="rotar">Rotar la imagen 90 grados</option>
+          <option value="invertir_eje">Invertir sobre el eje vertical</option>
+        </select>
+      </div>
+      <!-- Resto del código del formulario -->
+      <button type="submit" class="btn btn-primary">Procesar Imágenes</button>
+    </form>
+  </div>
+</body>
+</html>

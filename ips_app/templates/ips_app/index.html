@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Transformación de Imágenes</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function previewImage(input, imagePreviewId) {
+      var imagePreview = document.getElementById(imagePreviewId);
+
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        imagePreview.src = ''; // Vaciar la vista previa de la imagen
+      }
+    }
+
+    function checkSelection() {
+      var imageInputs = document.querySelectorAll('input[type="file"]');
+      var transformCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+      var submitButton = document.getElementById('submitButton');
+      var hasImageSelected = false;
+      var hasTransformationChecked = false;
+
+      // Verificar si al menos una imagen está seleccionada
+      for (var i = 0; i < imageInputs.length; i++) {
+        if (imageInputs[i].value !== '') {
+          hasImageSelected = true;
+          break;
+        }
+      }
+
+      // Verificar si al menos una transformación está marcada
+      for (var j = 0; j < transformCheckboxes.length; j++) {
+        if (transformCheckboxes[j].checked) {
+          hasTransformationChecked = true;
+          break;
+        }
+      }
+
+      // Habilitar o deshabilitar el botón de envío según las selecciones
+      if (hasImageSelected && hasTransformationChecked) {
+        submitButton.disabled = false;
+      } else {
+        submitButton.disabled = true;
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="mt-4">Transformación de Imágenes</h1>
+    <p>
+      Primero seleccione los archivos en formato jpg o png de su preferencia, después elija las transformaciones que desea aplicar.
+      <br>
+      Cuando este list@, pulse el botón 'Procesar Imágenes' para ver los resultados.
+    </p>
+    <hr>
+    <form action="/procesar-imagen" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {% for i in "1234" %}
+      <div class="form-group">
+        <label for="imagen{{ i }}">Imagen {{ i }}:</label>
+        <input type="file" class="form-control-file" id="imagen{{ i }}" name="imagen{{ i }}" accept=".jpg,.png" onchange="previewImage(this, 'preview{{ i }}')">
+        <div class="mt-2">
+          <img id="preview{{ i }}" src="#" alt="Vista previa" style="max-width: 200px; max-height: 200px;">
+        </div>
+      </div>
+      {% endfor %}
+      
+      <div class="form-group">
+        <label for="transformaciones">Seleccionar Transformaciones:</label>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="transformacion1" name="transformacion" onchange="checkSelection()">
+          <label class="form-check-label" for="transformacion1">Invertir los colores</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="transformacion2" name="transformacion" onchange="checkSelection()">
+          <label class="form-check-label" for="transformacion2">Pasar a Blanco y Negro</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="transformacion3" name="transformacion" onchange="checkSelection()">
+          <label class="form-check-label" for="transformacion3">Rotar la imagen 90 grados</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="transformacion4" name="transformacion" onchange="checkSelection()">
+          <label class="form-check-label" for="transformacion4">Invertir sobre el eje vertical</label>
+        </div>
+      </div>
+      
+      <button type="submit" id="submitButton" class="btn btn-primary" disabled>Procesar Imágenes</button>
+    </form>
+  </div>
+</body>
+
+</html>
